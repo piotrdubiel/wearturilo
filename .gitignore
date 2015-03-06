@@ -24,3 +24,11 @@ proguard/
 
 # Log Files
 *.log
+.idea/
+wearturilo.iml
+
+Application/Application.iml
+
+Common/Common.iml
+
+Wear/Wear.iml
