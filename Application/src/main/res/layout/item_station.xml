@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="80dp"
     android:background="@color/white"
-    android:gravity="center_vertical"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/id_tv_station_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/color_gray"
-        android:layout_gravity="end"
-        android:layout_margin="0dp"
-        tools:text="sf" />
+        android:textColor="@color/color_16"
+        android:layout_margin="8dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="8dp"
+        tools:text="35345" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_centerVertical="true">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -56,12 +57,18 @@
             tools:text="ul. Gałczyńskiego - ul. Foksal" />
 
 
-        <TextView
-            android:id="@+id/id_tv_station_distance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/id_tv_station_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed-light"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:layout_margin="8dp"
+        tools:text="4km"/>
 
-</LinearLayout>
+</RelativeLayout>
