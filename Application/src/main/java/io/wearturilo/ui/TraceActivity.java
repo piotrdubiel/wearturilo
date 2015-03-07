@@ -20,6 +20,7 @@ import io.wearturilo.WearturiloApp;
 import io.wearturilo.common.model.Station;
 import io.wearturilo.common.model.directions.Directions;
 import io.wearturilo.network.DirectionApiClient;
+import io.wearturilo.notification.DirectionNotification;
 import io.wearturilo.provider.UserDataProvider;
 import io.wearturilo.ui.adapter.TraceListAdapter;
 import javax.inject.Inject;
@@ -92,6 +93,8 @@ public class TraceActivity extends Activity implements LocationListener {
                                    @Override
                                    public void call(Directions directions) {
                                         traceListAdapter.fillListByNewItem(directions);
+                                       DirectionNotification.showDirectionNotification(TraceActivity.this, station, directions.getSteps().get(1));
+
                                    }
                                },
                             new Action1<Throwable>() {
