@@ -9,10 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.text.format.Time;
 import android.util.Log;
 import android.widget.Toast;
-import butterknife.ButterKnife;
-import butterknife.InjectView;
+
 import com.octo.android.robospice.persistence.exception.SpiceException;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import butterknife.OnClick;
 import io.wearturilo.common.model.Station;
 import io.wearturilo.common.model.StationList;
@@ -20,7 +24,6 @@ import io.wearturilo.common.model.directions.Directions;
 import io.wearturilo.common.utils.DistanceUtils;
 import io.wearturilo.network.DirectionApiClient;
 import io.wearturilo.network.ListStationRequest;
-import io.wearturilo.notification.Direction;
 import io.wearturilo.notification.DirectionNotification;
 import io.wearturilo.provider.UserDataProvider;
 import io.wearturilo.ui.BaseRetrofitActivity;
@@ -29,9 +32,6 @@ import io.wearturilo.ui.adapter.StationListAdapter;
 import retrofit.RestAdapter;
 import rx.functions.Action0;
 import rx.functions.Action1;
-
-import javax.inject.Inject;
-import javax.inject.Named;
 
 public class MainActivity extends BaseRetrofitActivity<StationList> implements LocationListener {
 

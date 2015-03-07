@@ -4,9 +4,11 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,7 +34,7 @@ import rx.functions.Action0;
 import rx.functions.Action1;
 
 public class TraceActivity extends Activity implements LocationListener {
-
+    private static final String VETURILO_PACKAGE_NAME = "de.nextbike";
 
     @InjectView(R.id.direction_list)
     RecyclerView stationListRecyclerView;
@@ -123,10 +125,26 @@ public class TraceActivity extends Activity implements LocationListener {
         }
     }
     @OnClick(R.id.bike_button)
-    protected void openVertuliroApp() {
+    protected void openVeturilo() {
+        PackageManager pm = getPackageManager();
+        if (isVeturiloInstalled()) {
+            startActivity(new Intent(pm.getLaunchIntentForPackage(VETURILO_PACKAGE_NAME)));
+        }
+        else {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + VETURILO_PACKAGE_NAME)));
+        }
+
     }
 
-
+    private boolean isVeturiloInstalled() {
+        PackageManager pm = getPackageManager();
+        try {
+            pm.getPackageInfo(VETURILO_PACKAGE_NAME, PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
 
     @Override
     public void onLocationChanged(Location location) {

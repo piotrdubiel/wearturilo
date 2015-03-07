@@ -16,7 +16,7 @@
             android:layout_marginBottom="@dimen/floating_button_margin"
             android:layout_marginEnd="@dimen/floating_button_margin"
             android:layout_marginRight="@dimen/floating_button_margin"
-            fab:fab_colorNormal="#3F51B5"
+            fab:fab_colorNormal="@color/primary_color"
             fab:fab_colorPressed="#283593"
             fab:fab_icon="@drawable/ic_refresh_white_36dp"/>
 

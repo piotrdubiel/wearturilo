@@ -6,6 +6,8 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.text.Html;
 
+import java.util.List;
+
 import io.wearturilo.R;
 import io.wearturilo.common.model.Station;
 import io.wearturilo.common.model.directions.Step;
@@ -44,14 +46,16 @@ public class DirectionNotification {
     }
 
     public static void showDirectionNotification(Context context, Station station, Step step) {
+        NotificationCompat.WearableExtender wearable = new NotificationCompat.WearableExtender()
+                .setHintHideIcon(true)
+                .setContentIcon(step.maneuver.getDirection());
+
         Notification notification = new NotificationCompat.Builder(context)
-                .setSmallIcon(R.drawable.ic_directions_bike_black_48dp)
+                .setSmallIcon(R.drawable.ic_directions_bike_white_48dp)
                 .setContentTitle(station.getStationName())
-                .setContentText(Html.fromHtml(step.instructions))
-                .extend(new NotificationCompat.WearableExtender()
-                        .setHintHideIcon(true)
-                        .setCustomSizePreset(Notification.WearableExtender.SIZE_FULL_SCREEN)
-                        .setContentIcon(step.maneuver.getDirection()))
+                .setColor(context.getResources().getColor(R.color.primary_color))
+                .setContentText(Html.fromHtml(step.instructions).toString())
+                .extend(wearable)
                 .build();
 
         NotificationManagerCompat.from(context).notify(1, notification);
