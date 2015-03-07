@@ -92,7 +92,7 @@ public class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.
 
         void bind(Station station) {
             tvStationId.setText(station.getStationNumber());
-            tvBikeNumber.setText(String.valueOf(station.getBikeNumber().getNumber()));
+            tvBikeNumber.setText(String.valueOf("x "+station.getBikeNumber().getNumber()));
             tvStationName.setText(station.getStationName());
             tvStationDistance.setText(String.format("%.2f km", station.getDistanceFromUser()));
 
