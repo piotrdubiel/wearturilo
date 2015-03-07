@@ -8,7 +8,7 @@
             android:layout_height="match_parent"
             android:layout_width="match_parent"/>
     <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/refresh_btn"
+            android:id="@+id/bike_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -18,6 +18,6 @@
             android:layout_marginRight="@dimen/floating_button_margin"
             fab:fab_colorNormal="#3F51B5"
             fab:fab_colorPressed="#283593"
-            fab:fab_icon="@drawable/ic_refresh_white_36dp"/>
+            fab:fab_icon="@drawable/ic_directions_bike_white_36dp"/>
 
 </RelativeLayout>

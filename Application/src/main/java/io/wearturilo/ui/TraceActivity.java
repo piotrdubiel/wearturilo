@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.Time;
 import android.util.Log;
+import android.view.MenuItem;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -65,6 +66,14 @@ public class TraceActivity extends Activity implements LocationListener {
         callForDirection();
     }
 
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            onBackPressed();
+        }
+        return super.onMenuItemSelected(featureId, item);
+    }
+
     private void prepareLocalizationData(Location location) {
         if (location != null) {
             userDataProvider.setLat(location.getLatitude());
@@ -113,8 +122,8 @@ public class TraceActivity extends Activity implements LocationListener {
                     );
         }
     }
-    @OnClick(R.id.refresh_btn)
-    protected void requestForData() {
+    @OnClick(R.id.bike_button)
+    protected void openVertuliroApp() {
     }
 
 
