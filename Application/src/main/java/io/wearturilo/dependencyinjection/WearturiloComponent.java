@@ -9,7 +9,7 @@ import io.wearturilo.ui.BaseRetrofitActivity;
 import javax.inject.Singleton;
 
 @Singleton
-@Component(modules = {NetworkModule.class})
+@Component(modules = {NetworkModule.class, UtilsModule.class})
 public interface WearturiloComponent {
 
     public final static class Initializer {
