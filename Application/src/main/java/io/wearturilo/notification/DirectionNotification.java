@@ -51,7 +51,7 @@ public class DirectionNotification {
                 .extend(new NotificationCompat.WearableExtender()
                         .setHintHideIcon(true)
                         .setCustomSizePreset(Notification.WearableExtender.SIZE_FULL_SCREEN)
-                        .setContentIcon(R.drawable.ic_straight_36dp))
+                        .setContentIcon(step.maneuver.getDirection()))
                 .build();
 
         NotificationManagerCompat.from(context).notify(1, notification);
