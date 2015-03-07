@@ -11,18 +11,26 @@ import android.util.Log;
 import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 import com.octo.android.robospice.persistence.exception.SpiceException;
+
+import butterknife.OnClick;
 import io.wearturilo.common.model.Station;
 import io.wearturilo.common.model.StationList;
+import io.wearturilo.common.model.directions.Directions;
 import io.wearturilo.common.utils.DistanceUtils;
+import io.wearturilo.network.DirectionApiClient;
 import io.wearturilo.network.ListStationRequest;
 import io.wearturilo.notification.Direction;
 import io.wearturilo.notification.DirectionNotification;
 import io.wearturilo.provider.UserDataProvider;
 import io.wearturilo.ui.BaseRetrofitActivity;
 import io.wearturilo.ui.adapter.StationListAdapter;
+import retrofit.RestAdapter;
+import rx.functions.Action0;
+import rx.functions.Action1;
+
 import javax.inject.Inject;
+import javax.inject.Named;
 
 public class MainActivity extends BaseRetrofitActivity<StationList> implements LocationListener {
 
@@ -39,6 +47,10 @@ public class MainActivity extends BaseRetrofitActivity<StationList> implements L
     @Inject
     LocationManager locationManager;
 
+    @Inject
+    @Named("MAPS_REST")
+    RestAdapter restAdapter;
+
     private StationListAdapter stationListAdapter;
 
     @Override
@@ -48,7 +60,7 @@ public class MainActivity extends BaseRetrofitActivity<StationList> implements L
         WearturiloApp.component(this).inject(this);
         ButterKnife.inject(this);
         prepareList();
-        requestForData();
+        spiceManager.execute(new ListStationRequest(), this);
 
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         prepareLocalizationData(location);
@@ -59,6 +71,7 @@ public class MainActivity extends BaseRetrofitActivity<StationList> implements L
         if (location != null) {
             userDataProvider.setLat(location.getLatitude());
             userDataProvider.setLng(location.getLongitude());
+            getDirection();
         }
     }
 
@@ -71,11 +84,42 @@ public class MainActivity extends BaseRetrofitActivity<StationList> implements L
             @Override
             public void onStationItemClick(Station station) {
                 Log.d("MAIN", station.getStationName());
-                DirectionNotification.showDirectionNotification(MainActivity.this, station, Direction.LEFT);
+                userDataProvider.setSelectedStation(station);
+                getDirection();
             }
         });
     }
 
+    void getDirection(){
+        if (userDataProvider.isStation()) {
+            double lat = userDataProvider.getLat();
+            double lng = userDataProvider.getLng();
+            final Station station = userDataProvider.getSelectedStation();
+
+            restAdapter.create(DirectionApiClient.class)
+                    .directions("" + lat + "," + lng, "" + station.getLatPos() + "," + station.getLngPos(), "walking")
+                    .subscribe(new Action1<Directions>() {
+                                   @Override
+                                   public void call(Directions directions) {
+                                       DirectionNotification.showDirectionNotification(MainActivity.this, station, directions.getSteps().get(1));
+                                   }
+                               },
+                            new Action1<Throwable>() {
+                                @Override
+                                public void call(Throwable throwable) {
+                                    Log.e("Error", throwable.getMessage());
+                                }
+                            },
+                            new Action0() {
+                                @Override
+                                public void call() {
+
+                                }
+
+                            }
+                    );
+        }
+    }
     @OnClick(R.id.refresh_btn)
     protected void requestForData() {
         spiceManager.execute(new ListStationRequest(), this);
