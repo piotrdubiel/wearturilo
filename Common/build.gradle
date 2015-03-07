@@ -4,6 +4,15 @@ android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
 
+    signingConfigs {
+        wearturiloConfig {
+            storeFile file("${rootDir}/dev-tools/wearturilo.keystore")
+            storePassword "123456"
+            keyAlias "wearturilo"
+            keyPassword "123456"
+        }
+    }
+
     defaultConfig {
         minSdkVersion 20
         targetSdkVersion 21
@@ -11,13 +20,28 @@ android {
         versionName "1.0"
     }
     buildTypes {
+
+        debug {
+            signingConfig android.signingConfigs.wearturiloConfig
+        }
         release {
+            signingConfig android.signingConfigs.wearturiloConfig
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
+
 }
 
 dependencies {
     compile 'com.google.android.gms:play-services-wearable:6.5.87'
+    compile 'com.octo.android.robospice:robospice:1.4.14'
+    compile 'com.octo.android.robospice:robospice-retrofit:1.4.14'
+    compile 'com.octo.android.robospice:robospice-ormlite:1.4.14'
 }

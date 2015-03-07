@@ -4,6 +4,15 @@ android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
 
+    signingConfigs {
+        wearturiloConfig {
+            storeFile file("${rootDir}/dev-tools/wearturilo.keystore")
+            storePassword "123456"
+            keyAlias "wearturilo"
+            keyPassword "123456"
+        }
+    }
+
     defaultConfig {
         applicationId "io.wearturilo"
         minSdkVersion 20
@@ -12,10 +21,20 @@ android {
         versionName "1.0"
     }
     buildTypes {
+
+        debug {
+            signingConfig android.signingConfigs.wearturiloConfig
+        }
         release {
+            signingConfig android.signingConfigs.wearturiloConfig
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
 }
 
