@@ -4,7 +4,6 @@ import android.app.Notification;
 import android.content.Context;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-import android.view.Gravity;
 
 import io.wearturilo.R;
 import io.wearturilo.common.model.Station;
