@@ -5,13 +5,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import io.wearturilo.R;
 import io.wearturilo.common.model.Station;
 import io.wearturilo.common.model.StationList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class StationListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.ViewHolder> {
 
     private final List<Station> stationList;
 
@@ -22,8 +25,8 @@ public class StationListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_station,parent, false);
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_station, parent, false);
         final ViewHolder viewHolder = new ViewHolder(view);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,8 +38,8 @@ public class StationListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+    public void onBindViewHolder(StationListAdapter.ViewHolder holder, int position) {
+        holder.bind(stationList.get(position));
     }
 
     @Override
@@ -54,12 +57,35 @@ public class StationListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
+
+        @InjectView(R.id.id_tv_station_id)
+        TextView tvStationId;
+
+        @InjectView(R.id.id_tv_bike_number)
+        TextView tvBikeNumber;
+
+        @InjectView(R.id.id_tv_station_name)
+        TextView tvStationName;
+
+        @InjectView(R.id.id_tv_station_distance)
+        TextView tvStationDistance;
+
         ViewHolder(View itemView) {
             super(itemView);
+            ButterKnife.inject(this, itemView);
+        }
+
+        void bind(Station station){
+            tvStationId.setText(station.getStationNumber());
+            tvBikeNumber.setText(String.valueOf(station.getBikeNumber().getNumber()));
+            tvStationName.setText(station.getStationName());
+            tvStationDistance.setText("1 km");
+
         }
     }
 
-    public interface OnStationItemClickListener{
+    public interface OnStationItemClickListener {
+
         OnStationItemClickListener NULL = new OnStationItemClickListener() {
             @Override
             public void onStationItemClick(Station station) {

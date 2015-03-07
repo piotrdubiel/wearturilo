@@ -2,20 +2,30 @@ package io.wearturilo.common.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public enum BikeNumebr {
+public enum BikeNumber {
 
     @SerializedName(Metadata.NONE)
-    NONE,
+    NONE("0"),
     @SerializedName(Metadata.ONE)
-    ONE,
+    ONE("1"),
     @SerializedName(Metadata.TWO)
-    TWO,
+    TWO("2"),
     @SerializedName(Metadata.THREE)
-    THREE,
+    THREE("3"),
     @SerializedName(Metadata.FOUR)
-    FOUR,
+    FOUR("4"),
     @SerializedName(Metadata.MORE)
-    MORE;
+    MORE("5+");
+
+    private final String number;
+
+    private BikeNumber(String number){
+        this.number = number;
+    }
+
+    public String getNumber() {
+        return number;
+    }
 
     interface Metadata {
         String NONE = "NONE";

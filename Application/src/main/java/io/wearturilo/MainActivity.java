@@ -40,7 +40,6 @@ public class MainActivity extends BaseRetrofitActivity<StationList> {
 
     @Override
     public void onRequestSuccess(StationList stationList) {
-
         stationListAdapter.fillListByNewItem(stationList);
     }
 

@@ -29,7 +29,7 @@ public class Station {
     double lngPos;
 
     @SerializedName(Metadata.BIKE_NUMBER)
-    BikeNumebr bikeNumber;
+    BikeNumber bikeNumber;
 
     @SerializedName(Metadata.RACK_NUMBER)
     int rackNumber;
@@ -37,4 +37,27 @@ public class Station {
     @SerializedName(Metadata.BIKE_IDS)
     List<String> bikeIds;
 
+    public String getStationName() {
+        return stationName;
+    }
+
+    public String getStationNumber() {
+        return stationNumber;
+    }
+
+    public double getLatPos() {
+        return latPos;
+    }
+
+    public double getLngPos() {
+        return lngPos;
+    }
+
+    public BikeNumber getBikeNumber() {
+        return bikeNumber != null ? bikeNumber : BikeNumber.NONE;
+    }
+
+    public int getRackNumber() {
+        return rackNumber;
+    }
 }
