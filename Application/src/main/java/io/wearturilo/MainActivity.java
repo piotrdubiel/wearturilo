@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.Time;
+import android.util.Log;
 import android.util.TimeUtils;
 import android.widget.Toast;
 import butterknife.ButterKnife;
@@ -16,6 +17,7 @@ import io.wearturilo.common.model.Station;
 import io.wearturilo.common.model.StationList;
 import io.wearturilo.common.utils.DistanceUtils;
 import io.wearturilo.network.ListStationRequest;
+import io.wearturilo.notification.DirectionNotification;
 import io.wearturilo.provider.UserDataProvider;
 import io.wearturilo.ui.BaseRetrofitActivity;
 import io.wearturilo.ui.adapter.StationListAdapter;
@@ -67,7 +69,8 @@ public class MainActivity extends BaseRetrofitActivity<StationList> implements L
         stationListAdapter.setOnStationItemClickListener(new StationListAdapter.OnStationItemClickListener() {
             @Override
             public void onStationItemClick(Station station) {
-
+                Log.d("MAIN", station.getStationName());
+                DirectionNotification.showDirectionNotification(MainActivity.this, station);
             }
         });
     }
