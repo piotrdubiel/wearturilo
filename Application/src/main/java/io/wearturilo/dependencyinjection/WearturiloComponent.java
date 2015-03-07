@@ -5,6 +5,7 @@ import dagger.Component;
 import io.wearturilo.MainActivity;
 import io.wearturilo.WearturiloApp;
 import io.wearturilo.network.WearturiloRetrofitSpiceService;
+import io.wearturilo.ui.TraceActivity;
 import javax.inject.Singleton;
 
 @Singleton
@@ -26,5 +27,7 @@ public interface WearturiloComponent {
     void inject(WearturiloRetrofitSpiceService wearturiloRetrofitSpiceService);
 
     void inject(MainActivity mainActivity);
+
+    void inject(TraceActivity traceActivity);
 
 }

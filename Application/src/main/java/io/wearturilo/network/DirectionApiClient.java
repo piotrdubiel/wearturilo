@@ -11,4 +11,5 @@ public interface DirectionApiClient {
             @Query("origin") String origin,
             @Query("destination") String destinationLat,
             @Query("mode") String mode);
+
 }

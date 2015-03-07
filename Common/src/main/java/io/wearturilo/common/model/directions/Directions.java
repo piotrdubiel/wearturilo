@@ -2,6 +2,7 @@ package io.wearturilo.common.model.directions;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class Directions {

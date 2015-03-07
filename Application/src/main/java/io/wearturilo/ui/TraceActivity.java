@@ -1,5 +1,9 @@
-package io.wearturilo;
+package io.wearturilo.ui;
 
+import android.app.ActionBar;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -8,39 +12,28 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.Time;
 import android.util.Log;
-import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import com.octo.android.robospice.persistence.exception.SpiceException;
-
 import butterknife.OnClick;
+import io.wearturilo.R;
+import io.wearturilo.WearturiloApp;
 import io.wearturilo.common.model.Station;
-import io.wearturilo.common.model.StationList;
 import io.wearturilo.common.model.directions.Directions;
-import io.wearturilo.common.utils.DistanceUtils;
 import io.wearturilo.network.DirectionApiClient;
-import io.wearturilo.network.ListStationRequest;
-import io.wearturilo.notification.Direction;
-import io.wearturilo.notification.DirectionNotification;
 import io.wearturilo.provider.UserDataProvider;
-import io.wearturilo.ui.BaseRetrofitActivity;
-import io.wearturilo.ui.TraceActivity;
-import io.wearturilo.ui.adapter.StationListAdapter;
+import io.wearturilo.ui.adapter.TraceListAdapter;
+import javax.inject.Inject;
+import javax.inject.Named;
 import retrofit.RestAdapter;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.functions.Action1;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-
-public class MainActivity extends BaseRetrofitActivity<StationList> implements LocationListener {
+public class TraceActivity extends Activity implements LocationListener {
 
 
-    @InjectView(R.id.station_list)
+    @InjectView(R.id.direction_list)
     RecyclerView stationListRecyclerView;
-
-    @Inject
-    DistanceUtils distanceUtils;
 
     @Inject
     UserDataProvider userDataProvider;
@@ -52,48 +45,41 @@ public class MainActivity extends BaseRetrofitActivity<StationList> implements L
     @Named("MAPS_REST")
     RestAdapter restAdapter;
 
-    private StationListAdapter stationListAdapter;
+    private TraceListAdapter traceListAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_list_activity);
+        setContentView(R.layout.trace_list_activity);
         WearturiloApp.component(this).inject(this);
         ButterKnife.inject(this);
-
         prepareList();
-        spiceManager.execute(new ListStationRequest(), this);
+
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         prepareLocalizationData(location);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Time.SECOND * 20, 0, this);
+        callForDirection();
     }
 
     private void prepareLocalizationData(Location location) {
         if (location != null) {
             userDataProvider.setLat(location.getLatitude());
             userDataProvider.setLng(location.getLongitude());
-            getDirection();
+            callForDirection();
         }
     }
 
     private void prepareList() {
         final LinearLayoutManager lm = new LinearLayoutManager(this);
         stationListRecyclerView.setLayoutManager(lm);
-        stationListAdapter = new StationListAdapter();
-        stationListRecyclerView.setAdapter(stationListAdapter);
-        stationListAdapter.setOnStationItemClickListener(new StationListAdapter.OnStationItemClickListener() {
-            @Override
-            public void onStationItemClick(Station station) {
-                Log.d("MAIN", station.getStationName());
-                userDataProvider.setSelectedStation(station);
-                startActivity(TraceActivity.IntentFactory.forStart(MainActivity.this));
-                //getDirection();
-            }
-        });
+        traceListAdapter = new TraceListAdapter();
+        stationListRecyclerView.setAdapter(traceListAdapter);
     }
 
-    void getDirection(){
+    void callForDirection(){
         if (userDataProvider.isStation()) {
             double lat = userDataProvider.getLat();
             double lng = userDataProvider.getLng();
@@ -101,10 +87,11 @@ public class MainActivity extends BaseRetrofitActivity<StationList> implements L
 
             restAdapter.create(DirectionApiClient.class)
                     .directions("" + lat + "," + lng, "" + station.getLatPos() + "," + station.getLngPos(), "walking")
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Action1<Directions>() {
                                    @Override
                                    public void call(Directions directions) {
-                                       DirectionNotification.showDirectionNotification(MainActivity.this, station, directions.getSteps().get(1));
+                                        traceListAdapter.fillListByNewItem(directions);
                                    }
                                },
                             new Action1<Throwable>() {
@@ -125,22 +112,14 @@ public class MainActivity extends BaseRetrofitActivity<StationList> implements L
     }
     @OnClick(R.id.refresh_btn)
     protected void requestForData() {
-        spiceManager.execute(new ListStationRequest(), this);
     }
 
-    @Override
-    public void onRequestSuccess(StationList stationList) {
-        stationListAdapter.fillListByNewItem(stationList, distanceUtils, userDataProvider);
-    }
 
-    @Override
-    public void onRequestFailure(SpiceException spiceException) {
-        Toast.makeText(this, "Couldn't download list of station", Toast.LENGTH_LONG).show();
-    }
 
     @Override
     public void onLocationChanged(Location location) {
         prepareLocalizationData(location);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Time.SECOND * 20, 0, this);
         if (location != null) {
             Log.e("test", "Location GET " + location.getLatitude() + "/" + location.getLongitude());
         }
@@ -159,5 +138,11 @@ public class MainActivity extends BaseRetrofitActivity<StationList> implements L
     @Override
     public void onProviderDisabled(String provider) {
 
+    }
+
+    public static class IntentFactory {
+        public  static Intent forStart(Context context){
+            return new Intent(context,TraceActivity.class);
+        }
     }
 }
