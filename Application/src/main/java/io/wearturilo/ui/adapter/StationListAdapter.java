@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import io.wearturilo.R;
 import io.wearturilo.common.model.Station;
 import io.wearturilo.common.model.StationList;
 import java.util.LinkedList;
@@ -22,7 +23,7 @@ public class StationListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout., false);
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_station,parent, false);
         final ViewHolder viewHolder = new ViewHolder(view);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
