@@ -24,9 +24,6 @@ public interface WearturiloComponent {
 
     void inject(WearturiloApp wearturiloApp);
 
-    void inject(BaseRetrofitActivity baseRetrofitActivity);
-
-
     void inject(WearturiloRetrofitSpiceService wearturiloRetrofitSpiceService);
 
     void inject(MainActivity mainActivity);

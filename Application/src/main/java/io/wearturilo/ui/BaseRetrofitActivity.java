@@ -9,5 +9,18 @@ import javax.inject.Inject;
 
 public abstract class BaseRetrofitActivity<RESULT> extends Activity implements RequestListener<RESULT> {
 
+    @Inject
+    protected SpiceManager spiceManager;
 
+    @Override
+    protected void onStart() {
+        spiceManager.start(this);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        spiceManager.shouldStop();
+        super.onStop();
+    }
 }
