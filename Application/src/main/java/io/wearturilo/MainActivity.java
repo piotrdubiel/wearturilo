@@ -17,6 +17,7 @@ import io.wearturilo.common.model.Station;
 import io.wearturilo.common.model.StationList;
 import io.wearturilo.common.utils.DistanceUtils;
 import io.wearturilo.network.ListStationRequest;
+import io.wearturilo.notification.Direction;
 import io.wearturilo.notification.DirectionNotification;
 import io.wearturilo.provider.UserDataProvider;
 import io.wearturilo.ui.BaseRetrofitActivity;
@@ -70,7 +71,7 @@ public class MainActivity extends BaseRetrofitActivity<StationList> implements L
             @Override
             public void onStationItemClick(Station station) {
                 Log.d("MAIN", station.getStationName());
-                DirectionNotification.showDirectionNotification(MainActivity.this, station);
+                DirectionNotification.showDirectionNotification(MainActivity.this, station, Direction.LEFT);
             }
         });
     }
