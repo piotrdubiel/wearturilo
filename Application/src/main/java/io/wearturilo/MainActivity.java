@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.Time;
 import android.util.Log;
-import android.util.TimeUtils;
 import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -53,7 +52,7 @@ public class MainActivity extends BaseRetrofitActivity<StationList> implements L
 
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         prepareLocalizationData(location);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Time.SECOND *20, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Time.SECOND * 20, 0, this);
     }
 
     private void prepareLocalizationData(Location location) {
@@ -78,7 +77,7 @@ public class MainActivity extends BaseRetrofitActivity<StationList> implements L
     }
 
     @OnClick(R.id.refresh_btn)
-    protected void requestForData(){
+    protected void requestForData() {
         spiceManager.execute(new ListStationRequest(), this);
     }
 
@@ -95,7 +94,10 @@ public class MainActivity extends BaseRetrofitActivity<StationList> implements L
     @Override
     public void onLocationChanged(Location location) {
         prepareLocalizationData(location);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Time.SECOND *20, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Time.SECOND * 20, 0, this);
+        if (location != null) {
+            Log.e("test", "Location GET " + location.getLatitude() + "/" + location.getLongitude());
+        }
     }
 
     @Override

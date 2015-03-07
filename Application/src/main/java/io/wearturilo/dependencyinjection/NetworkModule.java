@@ -6,6 +6,7 @@ import dagger.Module;
 import dagger.Provides;
 import io.wearturilo.BuildConfig;
 import io.wearturilo.network.WearturiloRetrofitSpiceService;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import retrofit.RestAdapter;
 import retrofit.converter.Converter;
@@ -40,15 +41,31 @@ public class NetworkModule {
 
     @Provides
     @Singleton
+    @Named("MAIN")
     RestAdapter.Builder provideMainRestAdapterBuilder(GsonConverter gsonConverter) {
         return createRestAdapterBuilder(gsonConverter)
                 .setEndpoint(io.wearturilo.common.BuildConfig.URL);
     }
 
+    @Provides
+    @Singleton
+    @Named("MAPS")
+    RestAdapter.Builder provideMapsRestAdapterBuilder(GsonConverter gsonConverter) {
+        return createRestAdapterBuilder(gsonConverter)
+                .setEndpoint(io.wearturilo.common.BuildConfig.URL_MAPS);
+    }
+
 
     @Provides
     @Singleton
-    RestAdapter provideRestAdapter( RestAdapter.Builder builder) {
+    @Named("MAIN_REST")
+    RestAdapter provideRestAdapter(@Named("MAIN") RestAdapter.Builder builder) {
+        return builder.build();
+    }
+
+    @Provides
+    @Named("MAPS_REST")
+    RestAdapter provideMapsRestAdapter(@Named("MAPS") RestAdapter.Builder builder) {
         return builder.build();
     }
 }

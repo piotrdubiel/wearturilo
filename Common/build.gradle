@@ -24,12 +24,14 @@ android {
         debug {
             signingConfig android.signingConfigs.wearturiloConfig
             buildConfigField 'String', 'URL', '"http://wearturilo.herokuapp.com"'
+            buildConfigField 'String', 'URL_MAPS', '"https://maps.googleapis.com"'
         }
         release {
             signingConfig android.signingConfigs.wearturiloConfig
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'URL', '"http://wearturilo.herokuapp.com"'
+            buildConfigField 'String', 'URL_MAPS', '"https://maps.googleapis.com"'
         }
     }
 

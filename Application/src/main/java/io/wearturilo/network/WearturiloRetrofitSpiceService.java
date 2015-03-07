@@ -6,12 +6,14 @@ import com.octo.android.robospice.persistence.exception.CacheCreationException;
 import com.octo.android.robospice.retrofit.RetrofitGsonSpiceService;
 import io.wearturilo.WearturiloApp;
 import javax.inject.Inject;
+import javax.inject.Named;
 import retrofit.RestAdapter;
 
 public class WearturiloRetrofitSpiceService extends RetrofitGsonSpiceService {
 
 
     @Inject
+    @Named("MAIN")
     RestAdapter.Builder restAdapterBuilder;
 
     public void onCreate() {
