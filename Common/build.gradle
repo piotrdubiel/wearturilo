@@ -23,11 +23,13 @@ android {
 
         debug {
             signingConfig android.signingConfigs.wearturiloConfig
+            buildConfigField 'String', 'URL', '"http://192.168.43.215:5000"'
         }
         release {
             signingConfig android.signingConfigs.wearturiloConfig
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', 'URL', '"http://192.168.43.215:5000"'
         }
     }
 
