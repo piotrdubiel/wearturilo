@@ -7,16 +7,22 @@ import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.octo.android.robospice.persistence.exception.SpiceException;
+import io.wearturilo.common.model.Station;
 import io.wearturilo.common.model.StationList;
+import io.wearturilo.common.utils.DistanceUtils;
 import io.wearturilo.network.ListStationRequest;
 import io.wearturilo.ui.BaseRetrofitActivity;
 import io.wearturilo.ui.adapter.StationListAdapter;
+import javax.inject.Inject;
 
 public class MainActivity extends BaseRetrofitActivity<StationList> {
 
 
     @InjectView(R.id.station_list)
     RecyclerView stationListRecyclerView;
+
+    @Inject
+    DistanceUtils distanceUtils;
 
     private  StationListAdapter stationListAdapter;
 
@@ -33,8 +39,14 @@ public class MainActivity extends BaseRetrofitActivity<StationList> {
     private void prepareList(){
         final LinearLayoutManager lm = new LinearLayoutManager(this);
         stationListRecyclerView.setLayoutManager(lm);
-        stationListAdapter = new StationListAdapter();
+        stationListAdapter = new StationListAdapter(distanceUtils);
         stationListRecyclerView.setAdapter(stationListAdapter);
+        stationListAdapter.setOnStationItemClickListener(new StationListAdapter.OnStationItemClickListener() {
+            @Override
+            public void onStationItemClick(Station station) {
+                
+            }
+        });
     }
 
 

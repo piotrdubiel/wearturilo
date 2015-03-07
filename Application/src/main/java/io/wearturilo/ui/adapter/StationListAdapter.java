@@ -11,6 +11,7 @@ import butterknife.InjectView;
 import io.wearturilo.R;
 import io.wearturilo.common.model.Station;
 import io.wearturilo.common.model.StationList;
+import io.wearturilo.common.utils.DistanceUtils;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,10 +19,13 @@ public class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.
 
     private final List<Station> stationList;
 
+    private final DistanceUtils distanceUtils;
+
     private OnStationItemClickListener onStationItemClickListener = OnStationItemClickListener.NULL;
 
-    public StationListAdapter() {
+    public StationListAdapter(DistanceUtils distanceUtils) {
         stationList = new LinkedList<>();
+        this.distanceUtils = distanceUtils;
     }
 
     @Override
@@ -53,6 +57,10 @@ public class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.
             stationList.add(station);
         }
         notifyDataSetChanged();
+    }
+
+    public void setOnStationItemClickListener(OnStationItemClickListener onStationItemClickListener) {
+        this.onStationItemClickListener = onStationItemClickListener != null ? onStationItemClickListener : OnStationItemClickListener.NULL;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
