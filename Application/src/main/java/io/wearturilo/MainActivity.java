@@ -12,6 +12,7 @@ import android.util.TimeUtils;
 import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import io.wearturilo.common.model.Station;
 import io.wearturilo.common.model.StationList;
@@ -48,7 +49,7 @@ public class MainActivity extends BaseRetrofitActivity<StationList> implements L
         WearturiloApp.component(this).inject(this);
         ButterKnife.inject(this);
         prepareList();
-        spiceManager.execute(new ListStationRequest(), this);
+        requestForData();
 
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         prepareLocalizationData(location);
@@ -76,6 +77,10 @@ public class MainActivity extends BaseRetrofitActivity<StationList> implements L
         });
     }
 
+    @OnClick(R.id.refresh_btn)
+    protected void requestForData(){
+        spiceManager.execute(new ListStationRequest(), this);
+    }
 
     @Override
     public void onRequestSuccess(StationList stationList) {

@@ -3,8 +3,6 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:padding="10dp"
                 android:background="?android:attr/selectableItemBackground">
 
     <TextView
@@ -28,6 +26,7 @@
             android:textColor="@color/black"
             android:drawablePadding="2dp"
             android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"
             android:drawableTop="@drawable/ic_directions_bike_black_24dp"
             android:textSize="15sp"/>
 
