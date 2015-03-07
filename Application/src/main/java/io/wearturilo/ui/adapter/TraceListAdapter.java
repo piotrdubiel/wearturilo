@@ -33,9 +33,12 @@ public class TraceListAdapter extends RecyclerView.Adapter<TraceListAdapter.View
 
     @Override
     public void onBindViewHolder(TraceListAdapter.ViewHolder holder, int position) {
+        holder.textView.setText(Html.fromHtml(stepList.get(position).instructions));
         if (stepList.get(position).maneuver != null) {
-            holder.textView.setText(Html.fromHtml(stepList.get(position).instructions));
             holder.textView.setCompoundDrawablesRelativeWithIntrinsicBounds(stepList.get(position).maneuver.getDirection(), 0, 0, 0);
+        }
+        else {
+            holder.textView.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_straight_36dp, 0, 0, 0);
         }
     }
 
