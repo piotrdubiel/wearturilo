@@ -12,6 +12,9 @@ import io.wearturilo.R;
 import io.wearturilo.common.model.Station;
 import io.wearturilo.common.model.StationList;
 import io.wearturilo.common.utils.DistanceUtils;
+import io.wearturilo.provider.UserDataProvider;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,13 +22,10 @@ public class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.
 
     private final List<Station> stationList;
 
-    private final DistanceUtils distanceUtils;
-
     private OnStationItemClickListener onStationItemClickListener = OnStationItemClickListener.NULL;
 
-    public StationListAdapter(DistanceUtils distanceUtils) {
+    public StationListAdapter() {
         stationList = new LinkedList<>();
-        this.distanceUtils = distanceUtils;
     }
 
     @Override
@@ -51,11 +51,18 @@ public class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.
         return stationList.size();
     }
 
-    public void fillListByNewItem(StationList stationListObject) {
+    public void fillListByNewItem(StationList stationListObject,DistanceUtils distanceUtils, UserDataProvider userDataProvider) {
         stationList.clear();
         for (Station station : stationListObject) {
+            final double distanceFromUser = distanceUtils.countDistance(
+                                    station.getLatPos(),
+                                    station.getLngPos(),
+                                    userDataProvider.getLat(),
+                                    userDataProvider.getLng());
+            station.setDistanceFromUser(distanceFromUser);
             stationList.add(station);
         }
+        Collections.sort(stationList);
         notifyDataSetChanged();
     }
 
@@ -83,11 +90,11 @@ public class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.
             ButterKnife.inject(this, itemView);
         }
 
-        void bind(Station station){
+        void bind(Station station) {
             tvStationId.setText(station.getStationNumber());
             tvBikeNumber.setText(String.valueOf(station.getBikeNumber().getNumber()));
             tvStationName.setText(station.getStationName());
-            tvStationDistance.setText("1 km");
+            tvStationDistance.setText(String.format("%.2f km", station.getDistanceFromUser()));
 
         }
     }

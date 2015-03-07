@@ -3,7 +3,7 @@ package io.wearturilo.common.model;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
-public class Station {
+public class Station implements Comparable<Station>{
 
     interface Metadata {
         String STATION_NAME = "stationName";
@@ -37,6 +37,17 @@ public class Station {
     @SerializedName(Metadata.BIKE_IDS)
     List<String> bikeIds;
 
+    double distanceFromUser;
+
+    @Override
+    public int compareTo(Station another) {
+        return Double.compare(distanceFromUser, another.distanceFromUser);
+    }
+
+    public double getDistanceFromUser() {
+        return distanceFromUser;
+    }
+
     public String getStationName() {
         return stationName;
     }
@@ -59,5 +70,9 @@ public class Station {
 
     public int getRackNumber() {
         return rackNumber;
+    }
+
+    public void setDistanceFromUser(double distanceFromUser){
+        this.distanceFromUser = distanceFromUser;
     }
 }

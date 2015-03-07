@@ -23,13 +23,13 @@ android {
 
         debug {
             signingConfig android.signingConfigs.wearturiloConfig
-            buildConfigField 'String', 'URL', '"http://192.168.43.215:5000"'
+            buildConfigField 'String', 'URL', '"http://wearturilo.herokuapp.com"'
         }
         release {
             signingConfig android.signingConfigs.wearturiloConfig
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField 'String', 'URL', '"http://192.168.43.215:5000"'
+            buildConfigField 'String', 'URL', '"http://wearturilo.herokuapp.com"'
         }
     }
 
